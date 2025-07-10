@@ -9,6 +9,7 @@ const allowedOrigins = [
     'http://localhost:5173', // Local development
     'http://localhost:3000', // Alternative local port
     'http://localhost:4173', // Vite preview
+    'https://url-shortner-tawny-kappa.vercel.app', // Vercel deployment
     process.env.FRONTEND_URL, // Production frontend URL
     process.env.CUSTOM_DOMAIN ? `https://${process.env.CUSTOM_DOMAIN}` : null
 ].filter(Boolean);
