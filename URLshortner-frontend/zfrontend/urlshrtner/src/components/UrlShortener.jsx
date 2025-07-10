@@ -61,7 +61,7 @@ export default function UrlShortener() {
   const createNewShortUrl = async (forceNew = false) => {
     try {
       const data = await urlService.shortenUrl(longUrl, forceNew);
-      const generatedShortUrl = `https://urlshortnerbackend-1kvx.onrender.com/${data.shortId}`;
+      const generatedShortUrl = `https://url-shortner-tawny-kappa.vercel.app/${data.shortId}`;
       setShortUrl(generatedShortUrl);
       setIsExisting(data.isExisting || false);
       setIsShortening(false);
@@ -73,7 +73,7 @@ export default function UrlShortener() {
   };
 
   const handleUseExisting = () => {
-    const existingShortUrl = `https://urlshortnerbackend-1kvx.onrender.com/${existingUrlData.shortId}`;
+    const existingShortUrl = `https://url-shortner-tawny-kappa.vercel.app/${existingUrlData.shortId}`;
     setShortUrl(existingShortUrl);
     setIsExisting(true);
     setShowModal(false);

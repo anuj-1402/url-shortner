@@ -1,8 +1,9 @@
 export default function UrlExistsModal({ isOpen, onClose, onUseExisting, onCreateNew, existingShortId, longUrl }) {
   if (!isOpen) return null;
 
-  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8001';
-  const existingShortUrl = `${apiUrl}/api/url/${existingShortId}`;
+  // Use the production frontend URL for displaying short URLs
+  const frontendUrl = 'https://url-shortner-tawny-kappa.vercel.app';
+  const existingShortUrl = `${frontendUrl}/${existingShortId}`;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
