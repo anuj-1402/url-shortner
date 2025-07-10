@@ -51,6 +51,17 @@ app.get('/', (req, res) => {
 
 app.use('/api/url', urlRoutes); // Use the URL routes under the /api/url path
 app.use('/api/admin', adminRoutes); // Use the admin routes under the /api/admin path
+
+// Root-level redirect route for short URLs
+app.get('/:shortId', async (req, res) => {
+    try {
+        const { handleRedirect } = require('./controllers/url');
+        await handleRedirect(req, res);
+    } catch (error) {
+        console.error('Redirect error:', error);
+        res.status(404).json({ error: 'Short URL not found' });
+    }
+});
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
