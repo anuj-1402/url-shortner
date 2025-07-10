@@ -12,5 +12,5 @@ export function formatDate(timestamp) {
 }
 
 export function generateShortUrl(baseUrl, shortId) {
-  return `${baseUrl}/api/url/${shortId}`;
+  return `https://urlshortnerbackend-1kvx.onrender.com/${shortId}`;
 }

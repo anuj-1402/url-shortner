@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import UrlExistsModal from './UI/UrlExistsModal';
+import { urlService } from '../services/urlService';
 
 export default function UrlShortener() {
   const [longUrl, setLongUrl] = useState('');
@@ -10,35 +11,36 @@ export default function UrlShortener() {
   const [showModal, setShowModal] = useState(false);
   const [existingUrlData, setExistingUrlData] = useState(null);
 
+  // Reset all states when URL input changes
+  const handleUrlChange = (value) => {
+    setLongUrl(value);
+    setShortUrl('');
+    setShortenError('');
+    setIsExisting(false);
+    setShowModal(false);
+    setExistingUrlData(null);
+  };
+
   const handleShortenUrl = async () => {
     if (!longUrl.trim()) {
       setShortenError('Please enter a valid URL');
       return;
     }
 
+    console.log('Starting URL shortening process for:', longUrl);
+    console.log('Current state - showModal:', showModal, 'existingUrlData:', existingUrlData);
+
     setIsShortening(true);
     setShortenError('');
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8001';
-      
-      // First check if URL exists
-      const checkResponse = await fetch(`${apiUrl}/api/url/check`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ redirectUrl: longUrl }),
-      });
-
-      if (!checkResponse.ok) {
-        throw new Error('Failed to check URL');
-      }
-
-      const checkData = await checkResponse.json();
+      // First check if URL exists using urlService
+      const checkData = await urlService.checkUrlExists(longUrl);
+      console.log('Check response:', checkData);
       
       if (checkData.exists) {
         // URL exists, show modal for user choice
+        console.log('URL exists, showing modal');
         setExistingUrlData(checkData);
         setShowModal(true);
         setIsShortening(false);
@@ -46,6 +48,7 @@ export default function UrlShortener() {
       }
 
       // URL doesn't exist, create new one directly
+      console.log('URL does not exist, creating new one');
       await createNewShortUrl(false);
       
     } catch (error) {
@@ -57,21 +60,8 @@ export default function UrlShortener() {
 
   const createNewShortUrl = async (forceNew = false) => {
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8001';
-      const response = await fetch(`${apiUrl}/api/url/shorten`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ redirectUrl: longUrl, forceNew }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to shorten URL');
-      }
-
-      const data = await response.json();
-      const generatedShortUrl = `${apiUrl}/api/url/${data.shortId}`;
+      const data = await urlService.shortenUrl(longUrl, forceNew);
+      const generatedShortUrl = `https://urlshortnerbackend-1kvx.onrender.com/${data.shortId}`;
       setShortUrl(generatedShortUrl);
       setIsExisting(data.isExisting || false);
       setIsShortening(false);
@@ -83,8 +73,7 @@ export default function UrlShortener() {
   };
 
   const handleUseExisting = () => {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8001';
-    const existingShortUrl = `${apiUrl}/api/url/${existingUrlData.shortId}`;
+    const existingShortUrl = `https://urlshortnerbackend-1kvx.onrender.com/${existingUrlData.shortId}`;
     setShortUrl(existingShortUrl);
     setIsExisting(true);
     setShowModal(false);
@@ -138,7 +127,7 @@ export default function UrlShortener() {
             id="longUrl"
             type="url"
             value={longUrl}
-            onChange={(e) => setLongUrl(e.target.value)}
+            onChange={(e) => handleUrlChange(e.target.value)}
             placeholder="https://example.com/very/long/url"
             className="w-full px-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all duration-200 placeholder-gray-400"
           />

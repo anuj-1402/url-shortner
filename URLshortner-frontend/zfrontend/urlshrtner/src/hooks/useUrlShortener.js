@@ -20,7 +20,7 @@ export function useUrlShortener() {
 
     try {
       const data = await urlService.shortenUrl(longUrl, forceNew);
-      const generatedShortUrl = `${window.location.origin}/api/url/${data.shortId}`;
+      const generatedShortUrl = `https://urlshortnerbackend-1kvx.onrender.com/${data.shortId}`;
       setShortUrl(generatedShortUrl);
       setIsExisting(data.isExisting || false);
     } catch (error) {

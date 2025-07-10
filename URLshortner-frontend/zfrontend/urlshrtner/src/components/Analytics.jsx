@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { urlService } from '../services/urlService';
 
 export default function Analytics() {
   const [shortId, setShortId] = useState('');
@@ -16,14 +17,7 @@ export default function Analytics() {
     setAnalyticsError('');
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8001';
-      const response = await fetch(`${apiUrl}/api/url/analytics/${shortId}`);
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch analytics');
-      }
-
-      const data = await response.json();
+      const data = await urlService.getAnalytics(shortId.trim());
       setAnalytics(data);
     } catch (error) {
       setAnalyticsError('Error fetching analytics. Please check the short ID.');
