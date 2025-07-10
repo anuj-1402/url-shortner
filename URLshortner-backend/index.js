@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const PORT=8001;
+const PORT = process.env.PORT || 8001;
 
 // Enable CORS for frontend communication
 const allowedOrigins = [
