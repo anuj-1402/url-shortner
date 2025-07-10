@@ -32,6 +32,20 @@ const urlRoutes = require('./routes/url'); // Import the URL routes
 const adminRoutes = require('./routes/admin'); // Import the admin routes
 
 app.use(express.json()); // Middleware to parse JSON bodies
+
+// Root route for health check
+app.get('/', (req, res) => {
+    res.json({ 
+        message: 'URL Shortener API is running!', 
+        status: 'healthy',
+        endpoints: {
+            shorten: '/api/url/shorten',
+            redirect: '/api/url/:shortId',
+            check: '/api/url/check'
+        }
+    });
+});
+
 app.use('/api/url', urlRoutes); // Use the URL routes under the /api/url path
 app.use('/api/admin', adminRoutes); // Use the admin routes under the /api/admin path
 app.listen(PORT, () => {
