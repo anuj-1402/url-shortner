@@ -1,4 +1,4 @@
-# 🔗 URL Shortener - Full Stack Application
+# 🔗 URL Shortener -Mini - Full Stack Application
 
 A modern, full-stack URL shortener with analytics, automatic expiration, and smart duplicate detection.
 
