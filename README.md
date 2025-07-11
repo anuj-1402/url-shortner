@@ -27,44 +27,54 @@ A modern, full-stack URL shortener with analytics, automatic expiration, and sma
 ### Prerequisites
 - MongoDB Atlas cluster
 - GitHub repository
-- Vercel account
+- Render account (for backend)
+- Vercel account (for frontend)
 
 ### Backend Deployment (Deploy First)
-1. Go to [vercel.com](https://vercel.com)
-2. Import this repository
-3. Create new project with:
+1. Go to [render.com](https://render.com)
+2. Create new **Web Service**
+3. Connect your GitHub repository
+4. Configure:
    - **Root Directory**: `URLshortner-backend`
-   - **Framework**: Other
-4. Add Environment Variables:
+   - **Environment**: Node
+   - **Build Command**: `npm install`
+   - **Start Command**: `npm start`
+5. Add Environment Variables:
    ```
    MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database?retryWrites=true&w=majority
    NODE_ENV=production
    ```
-5. Deploy and note the backend URL
+6. Deploy and note the backend URL (e.g., `https://your-app.onrender.com`)
 
 ### Frontend Deployment (Deploy Second)
-1. Create another Vercel project
-2. Configure:
+1. Go to [vercel.com](https://vercel.com)
+2. Import this repository
+3. Create new project with:
    - **Root Directory**: `URLshortner-frontend/zfrontend/urlshrtner`
    - **Framework**: Vite
-3. Add Environment Variables:
+4. Add Environment Variables:
    ```
-   VITE_API_URL=https://your-backend-name.vercel.app
+   VITE_API_URL=https://your-backend-name.onrender.com
    ```
-4. Deploy
+5. Deploy
+
+## 🌐 Live Demo
+
+- **Frontend**: [https://url-shortner-tawny-kappa.vercel.app](https://url-shortner-tawny-kappa.vercel.app)
+- **Backend API**: [https://urlshortnerbackend-1kvx.onrender.com](https://urlshortnerbackend-1kvx.onrender.com)
 
 ## 🔐 Environment Variables
 
-### Backend (.env)
+### Backend (.env) - Render
 ```bash
 MONGODB_URI=your_mongodb_atlas_connection_string
 NODE_ENV=production
 FRONTEND_URL=https://your-frontend-app.vercel.app
 ```
 
-### Frontend (.env)
+### Frontend (.env) - Vercel
 ```bash
-VITE_API_URL=https://your-backend-app.vercel.app
+VITE_API_URL=https://your-backend-app.onrender.com
 ```
 
 ## 🛠️ Local Development
